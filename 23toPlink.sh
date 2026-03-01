@@ -21,3 +21,5 @@ while read filepath; do
     filename=$(basename "$filepath")
     plink1.9 --bfile "$filepath" --exclude "$output_dir"-merge.missnp --make-bed --out "clean_$output_dir/$filename"
 done < "$output_dir".txt
+ls clean_"$output_dir"/*.bed | sed 's/.bed//g' > clean_"$output_dir".txt
+plink1.9 --merge-list clean_"$output_dir".txt --make-bed --out clean_"$output_dir"

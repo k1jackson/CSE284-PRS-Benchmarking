@@ -1,2 +1,7 @@
 GIANT_GWAS_summary_stats.tsv
 harvard_pgp_data
+ldref_hm3_plus*
+tmp-data
+chr*
+map_hm3_plus.rds
+clean_plink_data.rds
