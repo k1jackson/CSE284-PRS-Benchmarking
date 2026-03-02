@@ -2,10 +2,9 @@ library(bigsnpr)
 library(bigreadr)
 library(tidyverse)
 library(data.table)
-library(ggpubr)
 
 # load Harvard PGP data
-rds_path <- snp_readBed("clean_plink_data.bed")
+rds_path <- snp_readBed("PGP_filtered_data.bed") #"clean_plink_data.bed")
 obj.bigSNP <- snp_attach(rds_path)
 genotypes <- snp_fastImputeSimple(obj.bigSNP$genotypes, method = "mean0", ncores = nb_cores())
 SNPs <- obj.bigSNP$map
@@ -20,9 +19,9 @@ sum_stats <- sum_stats %>% filter(chr %in% 1:22)
 
 # filter SNPs
 hapmap3 <- readRDS("map_hm3_plus.rds")
-info_SNPs <- snp_match(sum_stats, hapmap3)
+info_SNPs <- snp_match(sum_stats, hapmap3, join_by_pos = TRUE)
 setnames(info_SNPs, old = "_NUM_ID_", new = "hapmap3_index")
-info_SNPs <- snp_match(info_SNPs, SNPs, match.min.prop = 0.05)
+info_SNPs <- snp_match(info_SNPs, SNPs, join_by_pos = FALSE, match.min.prop = 0)
 setnames(info_SNPs, old = "_NUM_ID_", new = "plink_index")
 
 # construct LD matrix
@@ -58,19 +57,17 @@ results <- data.frame(sample = sub("_genome", "", obj.bigSNP$fam$family.ID), PRS
 write.table(results, "ldpred2_results.tsv", row.names = FALSE, quote = FALSE, sep = "\t")
 
 # compare heights
-heights <- fread("height_data.csv")
-names(heights) <- c("sample", "height")
+heights <- fread("PGP_phenotypes.csv")#"height_data.csv")
+names(heights) <- c("sample", "height", "sex")
 results <- merge(results, heights, by = "sample")
 setorder(results, height)
 
-results$pred_height <- scale(results$PRS) * sd(results$height) * 2 + mean(results$height)
-fit_line <- lm(pred_height ~ height, data = results)
-r2_title <- paste("R^2 =", round(summary(fit_line) $ r.squared, 3))
-plot <- ggplot(results, aes(x = height, y = pred_height)) + geom_point(size = 3) + 
-    geom_smooth(method = "lm", color = "blue", se = TRUE, fullrange = TRUE) +
-    geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
-    annotate("text", x = 73, y = 71.5, label = "Ideal", color = "red", angle = 15) +
-    annotate("text", x = 73, y = 75, label = "Best Fit", color = "blue", angle = 18) +
-    labs(title = r2_title, x = "Reported Height (in)", y = "Predicted Height from PRS (in)")
+results <- results %>% group_by(sex) %>% mutate(pred_height = scale(PRS) * sd(height) * 2 + mean(height)) %>% ungroup()
+r2_values <- results %>% group_by(sex) %>% summarize(r2 = round(summary(lm(pred_height ~ height)) $ r.squared, 3))
+r2_label <- paste0("Female R²: ", r2_values$r2[r2_values$sex == "Female"], ", Male R²: ", r2_values$r2[r2_values$sex == "Male"])
 
-ggsave("ldpred2_results.png", plot = plot, width = 4, height = 4, units = "in", dpi = 300)
+plot <- ggplot(results, aes(x = height, y = pred_height, color = sex, group = sex)) + 
+    geom_point(size = 3) + geom_smooth(method = "lm", se = TRUE, fullrange = TRUE) +
+    labs(title = r2_label, x = "Reported Height (in)", y = "Predicted Height from PRS (in)")
+
+ggsave("ldpred2_results.png", plot = plot, width = 6, height = 4, units = "in", dpi = 300)
