@@ -17,10 +17,10 @@
   - **ldpred2_1000G_results.tsv:** PRS for 1000 Genomes data with LDPred-2
   - **ldpred2_PGP_results.tsv:** PRS for Harvard PGP data with LDPred-2
 - **PRSice2:** Data and scripts to run PRSice-2
-  - **PRSice_PGP_data...:** Selected (<100MB) PGP data
+  - **PRSice2_running.R**: Bash script used to run PRSice-2
   - **1000Genomes:** Selected (<100MB) 1000 Genomes data and outputs
     - **PRSice_1000G.score:** PRS for 1000 Genomes with PRSice-2
-  - **HarvardPGP:** Selected (<100MB) 1000 Genomes data and outputs
+  - **HarvardPGP:** Selected (<100MB) Harvard PGP data and outputs
     - **PRSice_PGP.best:** PRS for Harvard PGP with PRSice-2
   
 ## Introduction
