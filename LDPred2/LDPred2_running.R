@@ -4,7 +4,7 @@ library(tidyverse)
 library(data.table)
 
 # Load Harvard PGP or 1000 Genomes data
-rds_path <- snp_readBed("PGP_filtered_data.bed") 
+rds_path <- snp_readBed("HarvardPGP/PGP_filtered_data.bed") 
 # rds_path <- snp_readBed("1000Genomes/1000G_merged_pruned.bed") 
 obj.bigSNP <- snp_attach(rds_path)
 genotypes <- snp_fastImputeSimple(obj.bigSNP$genotypes, method = "mean0", ncores = nb_cores())
@@ -63,4 +63,5 @@ h2_est <- ldsc[["h2"]]
 final_beta <- snp_ldpred2_inf(corr, info_SNPs, h2 = h2_est)
 prs <- big_prodVec(genotypes, final_beta, ind.row = 1:nrow(genotypes), ind.col = info_SNPs$plink_index)
 results <- data.frame(sample = sub("_genome", "", fam.order$FID), PRS = prs)
-write.table(results, "ldpred2_results.tsv", row.names = FALSE, quote = FALSE, sep = "\t")
+write.table(results, "ldpred2_PGP_results.tsv", row.names = FALSE, quote = FALSE, sep = "\t")
+# write.table(results, "ldpred2_1000G_results.tsv", row.names = FALSE, quote = FALSE, sep = "\t")

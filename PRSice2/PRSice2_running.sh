@@ -2,8 +2,8 @@
 
 Rscript PRSice.R \
     --prsice ./PRSice_linux \
-    --base PRSice_sumstats.txt \
-    --target PRSice_PGP_data \
+    --base HarvardPGP/PRSice_PGP_sumstats.txt \
+    --target HarvardPGP/PRSice_PGP_data \
     --snp rsid \
     --chr chr \
     --bp pos \
@@ -11,15 +11,15 @@ Rscript PRSice.R \
     --A2 a0 \
     --stat beta \
     --pvalue p \
-    --pheno PRSice_phenotypes.txt \
+    --pheno HarvardPGP/PRSice_PGP_phenotypes.txt \
     --pheno-col height \
-    --cov PRSice_phenotypes.txt \
+    --cov HarvardPGP/PRSice_PGP_phenotypes.txt \
     --cov-col sex_num \
     --out PRSice_PRS
 
 Rscript PRSice.R \
     --prsice ./PRSice_linux \
-    --base 1000Genomes/PRSice_sumstats.txt \
+    --base 1000Genomes/PRSice_1000G_sumstats.txt \
     --target 1000Genomes/PRSice_1000G_data \
     --snp rsid \
     --chr chr \
@@ -30,4 +30,4 @@ Rscript PRSice.R \
     --pvalue p \
     --no-regress \
     --bar-levels 1 \
-    --out PRSice_1000G
+    --out 1000Genomes/PRSice_1000G

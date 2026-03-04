@@ -11,5 +11,5 @@ LDPred2/1000Genomes/1000G_merged_pruned*
 PRSice2/lib
 PRSice2/PRSice.R
 PRSice2/PRSice_linux
-PRSice2/PRSice_1000G.all_score
-PRSice2/1000Genomes
+PRSice2/1000Genomes/PRSice_1000G.all_score
+PRSice2/1000Genomes/PRSice_1000G_data*
