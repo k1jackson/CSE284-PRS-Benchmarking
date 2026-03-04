@@ -7,6 +7,9 @@ LDPred2/map_hm3_plus.rds
 LDPred2/PGP_filtered_data
 LDPred2/PGP_raw_data
 LDPred2/PGP_data
+LDPred2/1000Genomes/1000G_merged_pruned*
 PRSice2/lib
 PRSice2/PRSice.R
 PRSice2/PRSice_linux
+PRSice2/PRSice_1000G.all_score
+PRSice2/1000Genomes
