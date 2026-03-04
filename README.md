@@ -29,4 +29,5 @@ Results
 
 
 Next step
+
 We will conduct this analysis using the 1000 Genomes dataset. Although height data is unavailable for this cohort, we will see what insights can be gained.
